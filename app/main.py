@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
 from app.middlewares import ApiKeyMiddleware, JSONWrapperMiddleware
-from app.routers import organizations_router
+from app.routers import activities_router, organizations_router
 
 
 def create_app(debug=False) -> FastAPI:
@@ -11,6 +11,7 @@ def create_app(debug=False) -> FastAPI:
     app.add_middleware(JSONWrapperMiddleware)
 
     app.include_router(organizations_router, prefix="/orgs")
+    app.include_router(activities_router, prefix="/activities")
 
     return app
 

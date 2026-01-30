@@ -3,7 +3,7 @@ from typing import AsyncGenerator
 from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.controllers.organizations import OrganizationController
+from app.controllers import ActivityController, OrganizationController
 from app.db import AsyncSessionLocal
 
 
@@ -23,3 +23,9 @@ def get_organization_controller(
     db: AsyncSession = Depends(get_db),
 ) -> OrganizationController:
     return OrganizationController(db)
+
+
+def get_activity_controller(
+    db: AsyncSession = Depends(get_db),
+) -> ActivityController:
+    return ActivityController(db)

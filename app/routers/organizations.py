@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, Query
 from pydantic import BaseModel as BaseSchema
 from pydantic import ConfigDict
 
-from app.controllers.organizations import OrganizationController
+from app.controllers import OrganizationController
 from app.deps import get_organization_controller
 
 router = APIRouter()
