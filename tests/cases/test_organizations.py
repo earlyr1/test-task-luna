@@ -77,7 +77,6 @@ async def test_search_organizations_by_activity_tree(
     client, activity, organization, org_activity
 ):
     resp = await client.get(f"/orgs/search/activity/{activity.id}")
-    print(resp.text)
     assert resp.status_code == 200
     data = resp.json()["content"]
     assert len(data) == 1

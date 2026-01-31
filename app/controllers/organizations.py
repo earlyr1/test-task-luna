@@ -68,7 +68,7 @@ class OrganizationController:
             select(Organization)
             .join(Organization.building)
             .where(
-                func.ST_Within(
+                func.ST_Intersects(
                     cast(Building.location, Geometry),  # ← ВАЖНО
                     envelope,
                 )
@@ -82,21 +82,27 @@ class OrganizationController:
         self, activity_id: int
     ) -> list[Organization]:
 
-        A0 = aliased(Activity)
-        A1 = aliased(Activity)
-        A2 = aliased(Activity)
-        A3 = aliased(Activity)
+        A0 = aliased(Activity)  # текущая активность
+        A1 = aliased(Activity)  # родитель
+        A2 = aliased(Activity)  # родитель родителя
+        A3 = aliased(Activity)  # родитель родителя родителя
 
         stmt = (
             select(Organization)
             .join(OrgXActivity, OrgXActivity.org_id == Organization.id)
-            .join(A0, A0.id == OrgXActivity.activity_id)
-            .outerjoin(A1, A1.parent_activity_id == A0.id)
-            .outerjoin(A2, A2.parent_activity_id == A1.id)
-            .outerjoin(A3, A3.parent_activity_id == A2.id)
+            .join(
+                A0,
+                or_(
+                    A0.id == OrgXActivity.activity_id,
+                    A0.id == activity_id
+                )
+            )
+            .outerjoin(A1, A0.parent_activity_id == A1.id)
+            .outerjoin(A2, A1.parent_activity_id == A2.id)
+            .outerjoin(A3, A2.parent_activity_id == A3.id)
             .where(
                 or_(
-                    A0.id == activity_id,
+                    OrgXActivity.activity_id == activity_id,
                     A1.id == activity_id,
                     A2.id == activity_id,
                     A3.id == activity_id,
