@@ -40,3 +40,6 @@ Tests use a separate database instance. Run with:
 ```bash
 make test
 ```
+
+Sample curls are stored in sample_curls.sh
+Database seed script outputs info about generated data, use it for testing
