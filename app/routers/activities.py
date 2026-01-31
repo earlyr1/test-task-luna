@@ -3,9 +3,9 @@ from pydantic import BaseModel as BaseSchema
 from pydantic import ConfigDict
 
 from app.controllers import ActivityController
-from app.deps import get_activity_controller
+from app.deps import get_activity_controller, verify_api_key
 
-router = APIRouter()
+router = APIRouter(dependencies=[Depends(verify_api_key)])
 
 
 class ActivitySchema(BaseSchema):

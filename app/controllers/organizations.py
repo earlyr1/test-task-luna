@@ -90,13 +90,7 @@ class OrganizationController:
         stmt = (
             select(Organization)
             .join(OrgXActivity, OrgXActivity.org_id == Organization.id)
-            .join(
-                A0,
-                or_(
-                    A0.id == OrgXActivity.activity_id,
-                    A0.id == activity_id
-                )
-            )
+            .join(A0, or_(A0.id == OrgXActivity.activity_id, A0.id == activity_id))
             .outerjoin(A1, A0.parent_activity_id == A1.id)
             .outerjoin(A2, A1.parent_activity_id == A2.id)
             .outerjoin(A3, A2.parent_activity_id == A3.id)
