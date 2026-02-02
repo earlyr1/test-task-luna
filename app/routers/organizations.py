@@ -3,9 +3,9 @@ from pydantic import BaseModel as BaseSchema
 from pydantic import ConfigDict
 
 from app.controllers import OrganizationController
-from app.deps import get_organization_controller, verify_api_key
+from app.deps import get_organization_controller
 
-router = APIRouter(dependencies=[Depends(verify_api_key)])
+router = APIRouter()
 
 
 class OrganizationSchema(BaseSchema):
